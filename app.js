@@ -19,10 +19,10 @@ class CartItem {
 }
 
 const productList = [
-  new Product(0, "Barca Shirt", 2600, 10),
-  new Product(1, "Madrid Shirt", 2600, 0),
-  new Product(2, "Inter Shirt", 2600, 2),
-  new Product(3, "Arsenal Shirt", 2600, 20),
+  new Product(1, "Barca Shirt", 2600, 10),
+  new Product(2, "Madrid Shirt", 2600, 0),
+  new Product(3, "Inter Shirt", 2600, 2),
+  new Product(4, "Arsenal Shirt", 2600, 20),
 ];
 const productIdMap = new Map(productList.map((item) => [item.id, item]));
 
@@ -45,10 +45,13 @@ app.get("/products", (req, res) => {
 });
 
 app.get(`/products/:id`, (req, res) => {
-  const id = Number(req.params.id);
-  if (productIdMap.has(id)) {
-    res.json(getProduct(id));
-    return;
+  const idParam = req.params.id;
+  if (/^\d+$/.test(idParam)) {
+    const id = Number(req.params.id);
+    if (productIdMap.has(id)) {
+      res.json(getProduct(id));
+      return;
+    }
   }
   res.status(404).json({ error: "Invalid product request" });
 });
